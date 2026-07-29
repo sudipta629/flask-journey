@@ -39,10 +39,10 @@ The goal is to master Flask by learning consistently.
 | 03 | Dynamic Routing | ✅ |
 | 04 | Templates (Jinja2) | ✅ |
 | 05 | Static Files | ✅ |
-| 06 | Forms | ⏳ |
-| 07 | Request & Response | ⏳ |
-| 08 | Blueprint | ⏳ |
-| 09 | SQLAlchemy | ⏳ |
+| 06 | Forms | ✅ |
+| 07 | Request & Response | ✅ |
+| 08 | Blueprint | ✅ |
+| 09 | SQLAlchemy | ✅ |
 | 10 | CRUD Operations | ⏳ |
 | 11 | Authentication | ⏳ |
 | 12 | REST API | ⏳ |
@@ -59,7 +59,9 @@ flask-journey/
 ├── Day-02/
 ├── Day-03/
 │
-├── app.py
+├──form.py
+├──instance
+├── main.py
 ├── requirements.txt
 └── README.md
 ```
