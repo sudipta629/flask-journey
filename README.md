@@ -35,10 +35,10 @@ The goal is to master Flask by learning consistently.
 | Day | Topic | Status |
 |------|--------------------------|:------:|
 | 01 | Flask Introduction | ✅ |
-| 02 | Routing | ⏳ |
-| 03 | Dynamic Routing | ⏳ |
-| 04 | Templates (Jinja2) | ⏳ |
-| 05 | Static Files | ⏳ |
+| 02 | Routing | ✅ |
+| 03 | Dynamic Routing | ✅ |
+| 04 | Templates (Jinja2) | ✅ |
+| 05 | Static Files | ✅ |
 | 06 | Forms | ⏳ |
 | 07 | Request & Response | ⏳ |
 | 08 | Blueprint | ⏳ |
