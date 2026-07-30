@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background:linear-gradient(135deg,#4F46E5,#7C3AED);
+            padding:20px;
+        }
+
+        .container{
+            width:100%;
+            max-width:450px;
+            background:#fff;
+            padding:35px;
+            border-radius:18px;
+            box-shadow:0 15px 35px rgba(0,0,0,.25);
+        }
+
+        h1{
+            text-align:center;
+            color:#4F46E5;
+            margin-bottom:10px;
+            font-size:30px;
+        }
+
+        p{
+            text-align:center;
+            color:#666;
+            margin-bottom:30px;
+        }
+
+        label{
+            display:block;
+            margin-bottom:8px;
+            color:#333;
+            font-weight:bold;
+        }
+
+        input[type="text"],
+        input[type="email"]{
+            width:100%;
+            padding:12px;
+            border:1px solid #ccc;
+            border-radius:8px;
+            margin-bottom:20px;
+            font-size:16px;
+            transition:.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus{
+            outline:none;
+            border-color:#4F46E5;
+            box-shadow:0 0 8px rgba(79,70,229,.3);
+        }
+
+        .btn-group{
+            display:flex;
+            gap:15px;
+            margin-top:10px;
+        }
+
+        input[type="submit"]{
+            flex:1;
+            background:#4F46E5;
+            color:#fff;
+            border:none;
+            padding:12px;
+            border-radius:8px;
+            font-size:16px;
+            font-weight:bold;
+            cursor:pointer;
+            transition:.3s;
+        }
+
+        input[type="submit"]:hover{
+            background:#4338CA;
+        }
+
+        .cancel-btn{
+            flex:1;
+            text-decoration:none;
+            text-align:center;
+            background:#e5e7eb;
+            color:#333;
+            padding:12px;
+            border-radius:8px;
+            font-weight:bold;
+            transition:.3s;
+        }
+
+        .cancel-btn:hover{
+            background:#d1d5db;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="container">
+
+    <h1>✏️ Edit User</h1>
+    <p>Update the user's information below.</p>
+
+    <form action="{{url_for('edit_user',id = user.id)}}" method="POST">
+
+        {{ form.hidden_tag() }}
+
+        <label>{{ form.name.label }}</label>
+        {{ form.name() }}
+
+        <label>{{ form.email.label }}</label>
+        {{ form.email() }}
+
+        <div class="btn-group">
+            {{ form.submit(value="Update User") }}
+            <a href="{{ url_for('users') }}" class="cancel-btn">Cancel</a>
+        </div>
+
+    </form>
+
+</div>
+
+</body>
+</html>
