@@ -1,8 +1,9 @@
-from flask import Flask, render_template, redirect, url_for, flash
+from flask import Flask, render_template, redirect, url_for, flash, request
 from form import MyForm
 from flask_wtf import FlaskForm
 from wtforms.validators import DataRequired, Email
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -22,6 +23,19 @@ class User(db.Model):
 
     def __repr__(self):
         return f"User('{self.name}','{self.email}')"
+
+
+class Blogs(db.Model):
+    __tablename__ = "blogs"
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(80), unique=True, nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f"Blogs('{self.title}','{self.content}')"
+
+
 
 
 @app.route("/")
@@ -105,6 +119,40 @@ def new_users():
         return redirect(url_for("users"))
     else:
         return render_template("users/create.html", form=form)
+
+
+
+@app.route("/users/<int:id>")
+def show_user(id):
+    user = db.get_or_404(User, id)
+    return render_template("users/show_user.html", user=user)
+
+           #blogs route start
+@app.route('/blogs')
+def blogs():
+    blogs = Blogs.query.order_by(Blogs.date_posted.desc()).all()
+    return render_template("blogs/index.html" , blogs=blogs)
+
+
+
+
+@app.route('/blogs/new', methods=["GET", "POST"])
+def create_blog():
+    if request.method == "POST":
+        title = request.form.get("title")
+        content = request.form.get("content")
+        new_blog = Blogs(title=title, content=content)
+        db.session.add(new_blog)
+        db.session.commit()
+        flash("Blog created successfully!")
+        return redirect(url_for("blogs"))
+
+    return render_template("blogs/create.html")
+
+
+
+
+
 
 
 
