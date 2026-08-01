@@ -6,7 +6,6 @@
     <title>Blogs</title>
 
     <style>
-
         *{
             margin:0;
             padding:0;
@@ -25,7 +24,7 @@
 
         .container{
             width:95%;
-            max-width:1100px;
+            max-width:1200px;
             background:#fff;
             padding:35px;
             border-radius:18px;
@@ -51,7 +50,6 @@
             padding:12px 22px;
             border-radius:8px;
             font-weight:bold;
-            transition:.3s;
         }
 
         .create-btn:hover{
@@ -61,24 +59,17 @@
         table{
             width:100%;
             border-collapse:collapse;
-            overflow:hidden;
-            border-radius:12px;
         }
 
         thead{
             background:#4F46E5;
-            color:#fff;
+            color:white;
         }
 
-        th,
-        td{
-            padding:16px;
-            text-align:left;
-        }
-
-        tbody tr{
+        th,td{
+            padding:15px;
+            text-align:center;
             border-bottom:1px solid #eee;
-            transition:.3s;
         }
 
         tbody tr:nth-child(even){
@@ -89,37 +80,25 @@
             background:#EEF2FF;
         }
 
-        td{
-            color:#444;
-            line-height:1.6;
+        .content{
+            max-width:350px;
+            overflow:hidden;
+            white-space:nowrap;
+            text-overflow:ellipsis;
         }
 
-        .content{
-            max-width:450px;
-            white-space:nowrap;
-            overflow:hidden;
-            text-overflow:ellipsis;
+        .blog-image{
+            width:120px;
+            height:90px;
+            object-fit:cover;
+            border-radius:10px;
+            border:2px solid #ddd;
         }
 
         .empty{
             text-align:center;
-            padding:30px;
-            color:#777;
             font-size:18px;
-        }
-
-        @media(max-width:768px){
-
-            .top-bar{
-                flex-direction:column;
-                gap:15px;
-            }
-
-            table{
-                display:block;
-                overflow-x:auto;
-            }
-
+            padding:30px;
         }
 
     </style>
@@ -130,25 +109,22 @@
 <div class="container">
 
     <div class="top-bar">
-
         <h1>📝 Blogs</h1>
 
         <a href="{{ url_for('create_blog') }}" class="create-btn">
             ➕ Create Blog
         </a>
-
     </div>
 
     <table>
 
         <thead>
-
             <tr>
                 <th>Title</th>
                 <th>Content</th>
+                <th>Image</th>
                 <th>Post Date</th>
             </tr>
-
         </thead>
 
         <tbody>
@@ -166,6 +142,18 @@
                 </td>
 
                 <td>
+                    {% if blog.image_file %}
+                        <img class="blog-image"
+                             src="{{ url_for('static', filename='images/' + blog.image_file) }}"
+                             alt="{{ blog.title }}">
+                    {% else %}
+                        <img class="blog-image"
+                             src="{{ url_for('static', filename='images/default.jpg') }}"
+                             alt="Default Image">
+                    {% endif %}
+                </td>
+
+                <td>
                     {{ blog.date_posted.strftime("%d %b %Y") }}
                 </td>
 
@@ -176,11 +164,9 @@
         {% else %}
 
             <tr>
-
-                <td colspan="3" class="empty">
+                <td colspan="4" class="empty">
                     No blogs available.
                 </td>
-
             </tr>
 
         {% endif %}

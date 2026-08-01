@@ -4,12 +4,15 @@ from flask_wtf import FlaskForm
 from wtforms.validators import DataRequired, Email
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+import os
 
 app = Flask(__name__)
 
 app.config["SECRET_KEY"] = "mysecretkey"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["UPLOAD_FOLDER"] = os.path.join(os.getcwd(), "static/images")
+app.config["ALLOWED_EXTENSIONS"] = ["png", "jpg", "jpeg"]
 
 db = SQLAlchemy(app)
 
@@ -30,6 +33,7 @@ class Blogs(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80), unique=True, nullable=False)
     content = db.Column(db.Text, nullable=False)
+    image_file = db.Column(db.String(200), nullable=False,default="default.jpg")
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     def __repr__(self):
@@ -133,6 +137,8 @@ def blogs():
     blogs = Blogs.query.order_by(Blogs.date_posted.desc()).all()
     return render_template("blogs/index.html" , blogs=blogs)
 
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
 
 
 
@@ -141,7 +147,15 @@ def create_blog():
     if request.method == "POST":
         title = request.form.get("title")
         content = request.form.get("content")
-        new_blog = Blogs(title=title, content=content)
+
+        file = request.files["image_file"]
+        if file and allowed_file(file.filename):
+            filename = file.filename
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        else:
+            filename = "default.jpg"
+
+        new_blog = Blogs(title=title, content=content,image_file=filename)
         db.session.add(new_blog)
         db.session.commit()
         flash("Blog created successfully!")
