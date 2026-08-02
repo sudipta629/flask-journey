@@ -23,9 +23,38 @@ class User(db.Model):
     name = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
 
+    profile = db.relationship(
+        'Profile',
+        back_populates='user',
+        uselist = False
+    )
+
 
     def __repr__(self):
         return f"User('{self.name}','{self.email}')"
+
+class Profile(db.Model):
+    __tablename__ = "profile"
+
+    id = db.Column(db.Integer, primary_key=True)
+    bio = db.Column(db.Text)
+
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey("user.id"),
+        nullable=False,
+        unique=True
+    )
+
+    user = db.relationship(
+        "User",
+        back_populates="profile"
+    )
+
+    def __repr__(self):
+        return f"Profile('{self.age}')"
+
+
 
 
 class Blogs(db.Model):
@@ -116,6 +145,13 @@ def new_users():
             email=form.email.data
         )
         db.session.add(new_user)
+        db.session.commit()
+
+        new_profile = Profile(
+            bio=form.bio.data,
+            user=new_user
+        )
+        db.session.add(new_profile)
         db.session.commit()
 
         flash("New user added")
