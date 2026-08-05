@@ -199,6 +199,9 @@ def create_blog():
 
     return render_template("blogs/create.html")
 
+@app.route('/show-blogs', methods=["GET", "POST"])
+def show_blogs():
+    return render_template("blogs/show.html")
 
 
 
