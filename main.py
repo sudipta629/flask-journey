@@ -22,6 +22,9 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(100) )
+
+
 
     profile = db.relationship(
         'Profile',
@@ -204,6 +207,10 @@ def show_blogs():
     return render_template("blogs/show.html")
 
 
+
+@app.route('/register', methods=["GET", "POST"])
+def register():
+    return render_template("auth/register.html")
 
 
 
